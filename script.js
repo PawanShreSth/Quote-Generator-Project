@@ -12,9 +12,18 @@ function loading() {
     quoteContainer.hidden = true;
 }
 
+// Hide Loading
+function complete() {
+    if (!loader.hidden) {
+        quoteContainer.hidden = false;
+        loader.hidden = true;
+    }
+}
+
 // Get Quote From API
 
 async function getQuote() {
+    loading();
     const proxyUrl = 'https://cors-anywhere.herokuapp.com/'
 
     const apiUrl = 'http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json';
@@ -36,6 +45,9 @@ async function getQuote() {
         }
 
         quoteText.innerText = data.quoteText;
+
+        // Stop loader animation and show quote container
+        complete();
     } catch(error) {
         getQuote();
         //console.log('whoops no quote ', error);
@@ -49,6 +61,7 @@ function tweetQuote() {
     window.open(twitterUrl, '_blank');
 }
 
+getQuote();
 
 // Event Listeners
 newQuoteBtn.addEventListener('click', getQuote);
